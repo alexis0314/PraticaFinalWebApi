@@ -1,6 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using PracticaFinalWebApi.Models;
-using static System.Collections.Specialized.BitVector32;
 
 namespace PracticaFinalWebApi.Data
 {
@@ -13,22 +12,93 @@ namespace PracticaFinalWebApi.Data
 
         public DbSet<Usuario> Usuarios { get; set; }
 
-        public DbSet<Estudiante> Estudiantes { get; set; }
+        public DbSet<ProgramaAcademico> ProgramasAcademicos { get; set; }
+
+        public DbSet<EstadoAcademico> EstadosAcademicos { get; set; }
+
+        public DbSet<Seccion> Secciones { get; set; }
 
         public DbSet<Profesor> Profesores { get; set; }
 
         public DbSet<Materia> Materias { get; set; }
 
-        public DbSet<ProgramaAcademico> ProgramasAcademicos { get; set; }
-
         public DbSet<PeriodoAcademico> PeriodosAcademicos { get; set; }
-
-        public DbSet<Seccion> Secciones { get; set; }
 
         public DbSet<TipoEvaluacion> TiposEvaluacion { get; set; }
 
-        public DbSet<EstadoAcademico> EstadosAcademicos { get; set; }
+        public DbSet<Estudiante> Estudiantes { get; set; }
 
         public DbSet<Calificacion> Calificaciones { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // Usuario
+            modelBuilder.Entity<Usuario>()
+                .HasIndex(u => u.Correo)
+                .IsUnique();
+
+            // Estudiante
+            modelBuilder.Entity<Estudiante>()
+                .HasIndex(e => e.Matricula)
+                .IsUnique();
+
+            // Materia -> Profesor
+            modelBuilder.Entity<Materia>()
+                .HasOne(m => m.Profesor)
+                .WithMany(p => p.Materias)
+                .HasForeignKey(m => m.ProfesorId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Estudiante -> ProgramaAcademico
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.ProgramaAcademico)
+                .WithMany(p => p.Estudiantes)
+                .HasForeignKey(e => e.ProgramaAcademicoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Estudiante -> EstadoAcademico
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.EstadoAcademico)
+                .WithMany(ea => ea.Estudiantes)
+                .HasForeignKey(e => e.EstadoAcademicoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Estudiante -> Seccion
+            modelBuilder.Entity<Estudiante>()
+                .HasOne(e => e.Seccion)
+                .WithMany(s => s.Estudiantes)
+                .HasForeignKey(e => e.SeccionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Calificacion -> Estudiante
+            modelBuilder.Entity<Calificacion>()
+                .HasOne(c => c.Estudiante)
+                .WithMany(e => e.Calificaciones)
+                .HasForeignKey(c => c.EstudianteId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Calificacion -> Materia
+            modelBuilder.Entity<Calificacion>()
+                .HasOne(c => c.Materia)
+                .WithMany(m => m.Calificaciones)
+                .HasForeignKey(c => c.MateriaId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Calificacion -> PeriodoAcademico
+            modelBuilder.Entity<Calificacion>()
+                .HasOne(c => c.PeriodoAcademico)
+                .WithMany(p => p.Calificaciones)
+                .HasForeignKey(c => c.PeriodoAcademicoId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Calificacion -> TipoEvaluacion
+            modelBuilder.Entity<Calificacion>()
+                .HasOne(c => c.TipoEvaluacion)
+                .WithMany(t => t.Calificaciones)
+                .HasForeignKey(c => c.TipoEvaluacionId)
+                .OnDelete(DeleteBehavior.Restrict);
+        }
     }
 }
