@@ -34,71 +34,92 @@ namespace PracticaFinalWebApi.Data
         {
             base.OnModelCreating(modelBuilder);
 
-            // Usuario
             modelBuilder.Entity<Usuario>()
                 .HasIndex(u => u.Correo)
                 .IsUnique();
 
-            // Estudiante
             modelBuilder.Entity<Estudiante>()
                 .HasIndex(e => e.Matricula)
                 .IsUnique();
 
-            // Materia -> Profesor
             modelBuilder.Entity<Materia>()
                 .HasOne(m => m.Profesor)
                 .WithMany(p => p.Materias)
                 .HasForeignKey(m => m.ProfesorId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Estudiante -> ProgramaAcademico
             modelBuilder.Entity<Estudiante>()
                 .HasOne(e => e.ProgramaAcademico)
                 .WithMany(p => p.Estudiantes)
                 .HasForeignKey(e => e.ProgramaAcademicoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Estudiante -> EstadoAcademico
             modelBuilder.Entity<Estudiante>()
                 .HasOne(e => e.EstadoAcademico)
                 .WithMany(ea => ea.Estudiantes)
                 .HasForeignKey(e => e.EstadoAcademicoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Estudiante -> Seccion
             modelBuilder.Entity<Estudiante>()
                 .HasOne(e => e.Seccion)
                 .WithMany(s => s.Estudiantes)
                 .HasForeignKey(e => e.SeccionId)
                 .OnDelete(DeleteBehavior.Restrict);
-
-            // Calificacion -> Estudiante
+            
             modelBuilder.Entity<Calificacion>()
                 .HasOne(c => c.Estudiante)
                 .WithMany(e => e.Calificaciones)
                 .HasForeignKey(c => c.EstudianteId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Calificacion -> Materia
             modelBuilder.Entity<Calificacion>()
                 .HasOne(c => c.Materia)
                 .WithMany(m => m.Calificaciones)
                 .HasForeignKey(c => c.MateriaId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Calificacion -> PeriodoAcademico
             modelBuilder.Entity<Calificacion>()
                 .HasOne(c => c.PeriodoAcademico)
                 .WithMany(p => p.Calificaciones)
                 .HasForeignKey(c => c.PeriodoAcademicoId)
                 .OnDelete(DeleteBehavior.Restrict);
 
-            // Calificacion -> TipoEvaluacion
             modelBuilder.Entity<Calificacion>()
                 .HasOne(c => c.TipoEvaluacion)
                 .WithMany(t => t.Calificaciones)
                 .HasForeignKey(c => c.TipoEvaluacionId)
                 .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Calificacion>()
+                .HasOne(c => c.TipoEvaluacion)
+                .WithMany(t => t.Calificaciones)
+                .HasForeignKey(c => c.TipoEvaluacionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.Calificacion1)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.Calificacion2)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.Calificacion3)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.Calificacion4)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.Examen)
+                .HasPrecision(5, 2);
+
+            modelBuilder.Entity<Calificacion>()
+                .Property(c => c.TotalCalificacion)
+                .HasPrecision(5, 2);
         }
+
     }
 }
