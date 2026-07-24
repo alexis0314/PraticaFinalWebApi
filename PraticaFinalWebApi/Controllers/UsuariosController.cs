@@ -63,7 +63,7 @@ namespace PracticaFinalWebApi.Controllers
 
         // Registrar usuario
         [HttpPost("Registrar")]
-        public async Task<IActionResult> Registrar(RegistroUsuarioDto dto)
+        public async Task<IActionResult> Registrar(Usuario dto)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -119,7 +119,7 @@ namespace PracticaFinalWebApi.Controllers
         // PUT api/<UsuariosController>/5
         [Authorize]
         [HttpPut("{id}")]
-        public async Task<IActionResult> Actualizar(int id, RegistroUsuarioDto dto)
+        public async Task<IActionResult> Actualizar(int id, Usuario dto)
         {
             if (!ModelState.IsValid)
             {
