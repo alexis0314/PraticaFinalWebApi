@@ -15,7 +15,7 @@ namespace PracticaFinalWebApi.Models
         public string Correo { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "La contraseña es obligatoria.")]
-        public string PasswordHash { get; set; } = string.Empty;
+        public string Password { get; set; } = string.Empty;
 
         [Required]
         public string Rol { get; set; } = "Usuario";

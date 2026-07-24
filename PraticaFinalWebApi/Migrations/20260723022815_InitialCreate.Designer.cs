@@ -12,7 +12,7 @@ using PracticaFinalWebApi.Data;
 namespace PracticaFinalWebApi.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20260723011109_InitialCreate")]
+    [Migration("20260723022815_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -301,7 +301,7 @@ namespace PracticaFinalWebApi.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<string>("PasswordHash")
+                    b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 

@@ -1,7 +1,8 @@
-using Microsoft.EntityFrameworkCore;
-using PracticaFinalWebApi.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using PracticaFinalWebApi.Data;
+using PracticaFinalWebApi.Helpers;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -63,6 +64,8 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddAuthorization();
+
+builder.Services.AddScoped<JwtHelper>();
 
 var app = builder.Build();
 
