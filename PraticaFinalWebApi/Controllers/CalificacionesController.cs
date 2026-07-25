@@ -17,7 +17,7 @@ namespace PracticaFinalWebApi.Controllers
         {
             _context = context;
         }
-        [HttpGet]
+        [HttpGet]  
         public async Task<IActionResult> Get()
         {
             var calificaciones = await _context.Calificaciones

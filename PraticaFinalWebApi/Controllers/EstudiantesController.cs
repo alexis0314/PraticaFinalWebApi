@@ -8,10 +8,6 @@ using PracticaFinalWebApi.Models;
 
 namespace PracticaFinalWebApi.Controllers
 {
-    [Route("api/[controller]")]
-    [ApiController]
-    public class EstudiantesController : ControllerBase
-    {
         // GET: api/<EstudiantesController>
         [Authorize]
         [Route("api/[controller]")]
@@ -84,5 +80,4 @@ namespace PracticaFinalWebApi.Controllers
                 return Ok("Estudiante eliminado correctamente.");
             }
         }
-    }
 }

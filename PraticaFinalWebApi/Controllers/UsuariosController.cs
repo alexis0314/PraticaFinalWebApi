@@ -78,7 +78,8 @@ namespace PracticaFinalWebApi.Controllers
             {
                 Nombre = dto.Nombre,
                 Correo = dto.Correo,
-                Password = dto.Password
+                Password = dto.Password,
+                Rol = dto.Rol
             };
 
             _context.Usuarios.Add(usuario);
@@ -136,6 +137,7 @@ namespace PracticaFinalWebApi.Controllers
             usuario.Nombre = dto.Nombre;
             usuario.Correo = dto.Correo;
             usuario.Password = dto.Password;
+            usuario.Rol = dto.Rol;
 
             await _context.SaveChangesAsync();
 
