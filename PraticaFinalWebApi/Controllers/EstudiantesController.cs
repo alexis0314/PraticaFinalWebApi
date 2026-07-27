@@ -41,20 +41,42 @@ namespace PracticaFinalWebApi.Controllers
                 return Ok(estudiante);
             }
 
-            // POST api/<EstudiantesController>
-            [HttpPost]
-            public async Task<IActionResult> Post(Estudiante estudiante)
-            {
-                if (!ModelState.IsValid)
-                    return BadRequest(ModelState);
+        // POST api/<EstudiantesController>
+        // POST api/Estudiante
+        [HttpPost]
+        public async Task<IActionResult> Post(Estudiante estudiante)
+        {
+            if (!ModelState.IsValid)
+                return BadRequest(ModelState);
 
-                _context.Estudiantes.Add(estudiante);
-                await _context.SaveChangesAsync();
+            // Validar Programa Académico
+            bool programaExiste = await _context.ProgramasAcademicos
+                .AnyAsync(p => p.Id == estudiante.ProgramaAcademicoId);
 
-                return Ok(estudiante);
-            }
-            // PUT api/<EstudiantesController>/5
-            [HttpPut("{id}")]
+            if (!programaExiste)
+                return BadRequest("El Programa Académico seleccionado no existe.");
+
+            // Validar Estado Académico
+            bool estadoExiste = await _context.EstadosAcademicos
+                .AnyAsync(e => e.Id == estudiante.EstadoAcademicoId);
+
+            if (!estadoExiste)
+                return BadRequest("El Estado Académico seleccionado no existe.");
+
+            // Validar Sección
+            bool seccionExiste = await _context.Secciones
+                .AnyAsync(s => s.Id == estudiante.SeccionId);
+
+            if (!seccionExiste)
+                return BadRequest("La Sección seleccionada no existe.");
+
+            _context.Estudiantes.Add(estudiante);
+            await _context.SaveChangesAsync();
+
+            return Ok(estudiante);
+        }
+        // PUT api/<EstudiantesController>/5
+        [HttpPut("{id}")]
             public async Task<IActionResult> Put(int id, Estudiante estudiante)
             {
                 if (id != estudiante.Id)

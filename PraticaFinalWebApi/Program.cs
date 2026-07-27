@@ -4,11 +4,15 @@ using Microsoft.IdentityModel.Tokens;
 using PracticaFinalWebApi.Data;
 using PracticaFinalWebApi.Helpers;
 using System.Text;
+using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Agregar servicios
-builder.Services.AddControllers();
+builder.Services.AddControllers()
+    .AddJsonOptions(options =>
+    {
+        options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+    });
 
 builder.Services.AddEndpointsApiExplorer();
 
@@ -40,10 +44,11 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-// Conexión con SQL Server
+
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(
         builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -69,11 +74,10 @@ builder.Services.AddScoped<JwtHelper>();
 
 var app = builder.Build();
 
-// Configurar Swagger
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
-
     app.UseSwaggerUI();
 }
 
