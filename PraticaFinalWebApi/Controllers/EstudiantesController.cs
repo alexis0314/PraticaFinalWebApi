@@ -49,21 +49,21 @@ namespace PracticaFinalWebApi.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
 
-            // Validar Programa Académico
+            
             bool programaExiste = await _context.ProgramasAcademicos
                 .AnyAsync(p => p.Id == estudiante.ProgramaAcademicoId);
 
             if (!programaExiste)
                 return BadRequest("El Programa Académico seleccionado no existe.");
 
-            // Validar Estado Académico
+            
             bool estadoExiste = await _context.EstadosAcademicos
                 .AnyAsync(e => e.Id == estudiante.EstadoAcademicoId);
 
             if (!estadoExiste)
                 return BadRequest("El Estado Académico seleccionado no existe.");
 
-            // Validar Sección
+            
             bool seccionExiste = await _context.Secciones
                 .AnyAsync(s => s.Id == estudiante.SeccionId);
 

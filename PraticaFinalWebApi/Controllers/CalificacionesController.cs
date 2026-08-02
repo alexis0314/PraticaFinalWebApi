@@ -130,31 +130,27 @@ namespace PracticaFinalWebApi.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            // Verificar que el estudiante exista
+            
             if (!await _context.Estudiantes.AnyAsync(e => e.Id == calificacion.EstudianteId))
                 return BadRequest("El estudiante no existe.");
 
-            // Verificar que la materia exista
+            
             if (!await _context.Materias.AnyAsync(m => m.Id == calificacion.MateriaId))
                 return BadRequest("La materia no existe.");
 
-            // Verificar que el período exista
+            
             if (!await _context.PeriodosAcademicos.AnyAsync(p => p.Id == calificacion.PeriodoAcademicoId))
                 return BadRequest("El período académico no existe.");
-
-            // Verificar que el tipo de evaluación exista
+      
             if (!await _context.TiposEvaluacion.AnyAsync(t => t.Id == calificacion.TipoEvaluacionId))
                 return BadRequest("El tipo de evaluación no existe.");
-
-            // Calcular promedio de las cuatro calificaciones
+            
             decimal promedio =
                 (calificacion.Calificacion1 +
                  calificacion.Calificacion2 +
                  calificacion.Calificacion3 +
                  calificacion.Calificacion4) / 4;
-
-            // Calcular nota final (70% promedio + 30% examen)
+ 
             calificacion.TotalCalificacion =
                 (promedio * 0.70m) +
                 (calificacion.Examen * 0.30m);
